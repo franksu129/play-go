@@ -25,38 +25,38 @@ func main() {
 
 	greetUsers()
 
-	for {
+	// 輸入資料
+	userName, userEmail, userTickets := getUserInput()
+	// 驗證
+	isValidName, isValidEmail, isValidTicketNumber := helper.ValidateUserInput(userName, userEmail, userTickets, remainingTickets)
 
-		// 輸入資料
-		userName, userEmail, userTickets := getUserInput()
-		// 驗證
-		isValidName, isValidEmail, isValidTicketNumber := helper.ValidateUserInput(userName, userEmail, userTickets, remainingTickets)
+	// 條件確認
+	if isValidName && isValidEmail && isValidTicketNumber {
 
-		// 條件確認
-		if isValidName && isValidEmail && isValidTicketNumber {
+		bookTicket(userTickets, userName, userEmail)
+		wg.Add(1)
+		go sendTicket(userTickets, userName, userEmail)
 
-			bookTicket(userTickets, userName, userEmail)
-			go sendTicket(userTickets, userName, userEmail)
+		names := getNames()
+		fmt.Printf("The name of bookings are: %v\n", names)
 
-			names := getNames()
-			fmt.Printf("The name of bookings are: %v\n", names)
-
-			if remainingTickets == 0 {
-				fmt.Println("Our conference is booked out. Come back next year.")
-				break
-			}
-		} else {
-			if !isValidName {
-				fmt.Println("name you entered is too short")
-			}
-			if !isValidEmail {
-				fmt.Println("email address you entered doesn't contain @ sign")
-			}
-			if !isValidTicketNumber {
-				fmt.Println("number of tickets you entered is invalid")
-			}
+		if remainingTickets == 0 {
+			fmt.Println("Our conference is booked out. Come back next year.")
+		}
+	} else {
+		if !isValidName {
+			fmt.Println("name you entered is too short")
+		}
+		if !isValidEmail {
+			fmt.Println("email address you entered doesn't contain @ sign")
+		}
+		if !isValidTicketNumber {
+			fmt.Println("number of tickets you entered is invalid")
 		}
 	}
+
+	wg.Wait()
+
 }
 
 func greetUsers() {
@@ -115,4 +115,5 @@ func sendTicket(userTickets uint, name string, email string) {
 	fmt.Println("###############")
 	fmt.Printf("Sending ticket:\n %v \nto email address %v\n", v, email)
 	fmt.Println("###############")
+	wg.Done()
 }
