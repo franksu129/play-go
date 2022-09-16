@@ -18,6 +18,14 @@ Go lang 第一個練習成式，可以了解以下實作
 
 
 ## GoConcurrency
-使用併發並等待任務結束方法
-1. sync.WaitGroup
-2. Channel
+主要測試並行時緒之間的等待和處理
+
+### changeValue
+修改共通參數時的作法
+1. Channel
+2. sync.Mutex (互斥鎖)
+
+### waitWay
+等待任務結束作法
+1. Channel
+2. sync.WaitGroup (任務數量控制)
