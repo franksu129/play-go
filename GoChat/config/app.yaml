@@ -1,0 +1,3 @@
+port: 5000
+chat: "chat_id"
+wait: "wait"
