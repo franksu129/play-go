@@ -19,6 +19,8 @@ func getRootPath() *string {
 }
 
 func init() {
+	fmt.Println("-------------------------")
+	fmt.Println("$HOME")
 	// 因為指令執行和 VsCode的 Debug launch 位置會不同
 	configPath := *getRootPath() + "/../../config"
 
