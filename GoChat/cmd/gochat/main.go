@@ -1,13 +1,11 @@
 package main
 
 import (
-	"GoCaht/internal/chatInit"
+	"GoChat/internal/chatInit"
+	"GoChat/routers"
 	"fmt"
-	"net/http"
 	"path/filepath"
 	"runtime"
-
-	"github.com/gin-gonic/gin"
 )
 
 var modelConfig *chatInit.Config
@@ -31,12 +29,6 @@ func init() {
 }
 
 func main() {
-	r := gin.Default()
-	r.LoadHTMLFiles("templates/index.html")
-	r.Static("/assets", "./templates/assets")
-	r.GET("/", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "index.html", nil)
-	})
-
+	r := routers.InitRoutes()
 	r.Run(fmt.Sprintf(":%d", modelConfig.Port))
 }
